@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PicoRV32 SoC — Peripheral Register Datasheet</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #222636;
+    --border: #2e3250; --accent: #4f8ef7; --accent2: #7c3aed;
+    --green: #22c55e; --red: #ef4444; --yellow: #f59e0b; --cyan: #06b6d4;
+    --text: #e2e8f0; --muted: #94a3b8; --code: #f472b6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px; line-height: 1.6;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────── */
+  .ds-header {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1040 50%, #0f1117 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 40px 60px 32px;
+  }
+  .ds-header .chip-name {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .ds-header h1 {
+    font-size: 32px; font-weight: 700; color: #fff;
+    margin-bottom: 6px;
+  }
+  .ds-header .subtitle { color: var(--muted); font-size: 15px; margin-bottom: 20px; }
+  .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 12px; font-size: 12px;
+    color: var(--muted);
+  }
+  .badge span { color: var(--accent); font-weight: 600; }
+
+  /* ── Layout ─────────────────────────────────────────────────────── */
+  .container { display: flex; min-height: calc(100vh - 160px); }
+
+  /* ── Sidebar nav ────────────────────────────────────────────────── */
+  .sidebar {
+    width: 240px; min-width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0; position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar h3 {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); padding: 0 20px 10px; border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .sidebar a {
+    display: block; padding: 7px 20px; color: var(--muted);
+    text-decoration: none; font-size: 13px; border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .sidebar a:hover { color: var(--text); border-left-color: var(--accent); background: var(--surface2); }
+  .sidebar a.section-head { color: var(--text); font-weight: 600; margin-top: 12px; }
+  .sidebar a.section-head:hover { border-left-color: var(--accent2); }
+
+  /* ── Main content ───────────────────────────────────────────────── */
+  .content { flex: 1; padding: 40px 60px; max-width: 960px; }
+
+  h2 {
+    font-size: 22px; font-weight: 700; color: #fff;
+    border-bottom: 2px solid var(--border); padding-bottom: 10px;
+    margin: 48px 0 20px; display: flex; align-items: center; gap: 10px;
+  }
+  h2 .addr-badge {
+    font-size: 12px; font-weight: 500; font-family: monospace;
+    background: var(--accent2); color: #fff;
+    padding: 2px 10px; border-radius: 20px;
+  }
+  h3 { font-size: 15px; font-weight: 600; color: var(--accent); margin: 28px 0 10px; }
+  p { color: var(--muted); margin-bottom: 12px; }
+
+  /* ── Memory map overview table ──────────────────────────────────── */
+  .memmap {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-size: 13px;
+  }
+  .memmap th {
+    background: var(--surface2); color: var(--muted);
+    padding: 8px 14px; text-align: left;
+    border: 1px solid var(--border); font-weight: 600;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .memmap td {
+    padding: 9px 14px; border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .memmap tr:nth-child(even) td { background: var(--surface2); }
+  .memmap tr:hover td { background: #1e2235; }
+  .memmap .addr { font-family: monospace; color: var(--cyan); font-weight: 600; }
+  .memmap .peri { color: #fff; font-weight: 600; }
+  .memmap .size { color: var(--yellow); }
+
+  /* ── Register block ─────────────────────────────────────────────── */
+  .reg-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; margin: 24px 0; overflow: hidden;
+  }
+  .reg-header {
+    background: var(--surface2); padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .reg-name { font-family: monospace; font-size: 15px; font-weight: 700; color: #fff; }
+  .reg-addr { font-family: monospace; font-size: 13px; color: var(--cyan); }
+  .reg-access {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 700; letter-spacing: 1px;
+  }
+  .ro { background: #164e63; color: #67e8f9; }
+  .rw { background: #14532d; color: #86efac; }
+  .w1c { background: #713f12; color: #fde68a; }
+
+  /* ── Bit-field diagram ──────────────────────────────────────────── */
+  .bitfield-wrap { padding: 16px 18px; overflow-x: auto; }
+  .bitfield {
+    display: flex; width: 100%; border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden; min-width: 560px;
+  }
+  .bit-cell {
+    flex: 1; text-align: center; border-right: 1px solid var(--border);
+    font-size: 10px; min-width: 0;
+  }
+  .bit-cell:last-child { border-right: none; }
+  .bit-num {
+    background: var(--surface2); color: var(--muted);
+    padding: 3px 2px; font-family: monospace; font-size: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bit-name {
+    padding: 6px 2px; font-family: monospace; font-size: 10px;
+    font-weight: 600; word-break: break-all;
+  }
+  .bit-used  { background: #1e2a4a; color: var(--accent); }
+  .bit-rsvd  { background: #1a1d27; color: #3d4466; }
+  .bit-rw    { background: #1a2e1a; color: var(--green); }
+  .bit-ro    { background: #1e2a4a; color: var(--cyan); }
+  .bit-w1c   { background: #2e2010; color: var(--yellow); }
+  .bit-reset-row {
+    background: var(--surface2); border-top: 1px solid var(--border);
+    padding: 4px 2px; font-family: monospace; font-size: 10px;
+    color: var(--muted); text-align: center;
+  }
+
+  /* ── Bit description table ──────────────────────────────────────── */
+  .bitdesc {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .bitdesc th {
+    background: #181b2a; color: var(--muted);
+    padding: 7px 14px; text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .bitdesc td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .bitdesc tr:last-child td { border-bottom: none; }
+  .bitdesc .bn { font-family: monospace; font-weight: 700; color: var(--cyan); width: 60px; }
+  .bitdesc .bname { font-family: monospace; font-weight: 700; color: #fff; width: 120px; }
+  .bitdesc .bacc { width: 56px; }
+  .bitdesc .brst { font-family: monospace; color: var(--yellow); width: 60px; }
+  .bitdesc .bdesc { color: var(--muted); }
+
+  /* ── Code / example boxes ───────────────────────────────────────── */
+  .code-block {
+    background: #0a0c14; border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 18px; margin: 16px 0;
+    font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12.5px;
+    overflow-x: auto; line-height: 1.7;
+  }
+  .code-block .c { color: #6b7280; } /* comment */
+  .code-block .k { color: #c084fc; } /* keyword */
+  .code-block .t { color: #67e8f9; } /* type */
+  .code-block .v { color: #fde68a; } /* value/hex */
+  .code-block .fn { color: #86efac; } /* function */
+  .code-block .s { color: #fda4af; } /* string */
+
+  /* ── Note / tip boxes ───────────────────────────────────────────── */
+  .note {
+    border-left: 3px solid var(--accent); background: #1a1d2e;
+    padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 16px 0;
+    font-size: 13px; color: var(--muted);
+  }
+  .note strong { color: var(--accent); }
+  .warn {
+    border-left: 3px solid var(--yellow); background: #1f1a0e;
+    padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 16px 0;
+    font-size: 13px; color: var(--muted);
+  }
+  .warn strong { color: var(--yellow); }
+
+  /* ── Section divider ────────────────────────────────────────────── */
+  .section-divider {
+    height: 1px; background: var(--border); margin: 48px 0;
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────── */
+  footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 20px 60px; color: var(--muted); font-size: 12px;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ HEADER -->
+<div class="ds-header">
+  <div class="chip-name">PicoRV32 SoC — RealDigital Boolean Board</div>
+  <h1>Peripheral Register Datasheet</h1>
+  <div class="subtitle">Complete register reference for UART · LED · Timer · TRNG peripherals</div>
+  <div class="badges">
+    <div class="badge">CPU <span>RV32I @ 100 MHz</span></div>
+    <div class="badge">FPGA <span>Xilinx Spartan-7 XC7S50</span></div>
+    <div class="badge">Bus <span>PicoRV32 Native Mem</span></div>
+    <div class="badge">Clock <span>100 MHz (10 ns/tick)</span></div>
+    <div class="badge">App RAM <span>8 KB @ 0x1000_0000</span></div>
+    <div class="badge">Boot ROM <span>2 KB @ 0x0000_0000</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════ SIDEBAR -->
+<nav class="sidebar">
+  <h3>Contents</h3>
+  <a href="#memmap" class="section-head">Memory Map</a>
+  <a href="#uart" class="section-head">1. UART</a>
+  <a href="#uart-data">  UART_DATA</a>
+  <a href="#uart-status">  UART_STATUS</a>
+  <a href="#uart-ex">  Usage Examples</a>
+  <a href="#led" class="section-head">2. LED</a>
+  <a href="#led-reg">  LED_REG</a>
+  <a href="#led-ex">  Usage Examples</a>
+  <a href="#timer" class="section-head">3. Timer</a>
+  <a href="#timer-cnt">  TIMER_CNT</a>
+  <a href="#timer-cmp">  TIMER_CMP</a>
+  <a href="#timer-ctrl">  TIMER_CTRL</a>
+  <a href="#timer-ex">  Usage Examples</a>
+  <a href="#trng" class="section-head">4. TRNG</a>
+  <a href="#trng-data">  TRNG_DATA</a>
+  <a href="#trng-status">  TRNG_STATUS</a>
+  <a href="#trng-ctrl">  TRNG_CTRL</a>
+  <a href="#trng-div">  TRNG_DIV</a>
+  <a href="#trng-ex">  Usage Examples</a>
+  <a href="#drivers" class="section-head">5. C Drivers</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ CONTENT -->
+<div class="content">
+
+<!-- ── Memory Map ──────────────────────────────────────────────── -->
+<h2 id="memmap">System Memory Map</h2>
+<p>All peripherals are memory-mapped. The PicoRV32 CPU accesses them via standard load/store instructions. The upper nibble of the address selects the peripheral.</p>
+
+<table class="memmap">
+  <tr>
+    <th>Base Address</th><th>End Address</th><th>Size</th>
+    <th>Peripheral</th><th>Description</th>
+  </tr>
+  <tr>
+    <td class="addr">0x0000_0000</td><td class="addr">0x0000_07FF</td>
+    <td class="size">2 KB</td><td class="peri">Boot ROM</td>
+    <td>Bootloader (preloaded from bootloader.hex). R/W by CPU.</td>
+  </tr>
+  <tr>
+    <td class="addr">0x1000_0000</td><td class="addr">0x1000_1FFF</td>
+    <td class="size">8 KB</td><td class="peri">App RAM</td>
+    <td>Application code + data. Written by bootloader at startup.</td>
+  </tr>
+  <tr>
+    <td class="addr">0x2000_0000</td><td class="addr">0x2000_0007</td>
+    <td class="size">8 B</td><td class="peri">UART</td>
+    <td>Serial port — TX / RX data + status register.</td>
+  </tr>
+  <tr>
+    <td class="addr">0x3000_0000</td><td class="addr">0x3000_0003</td>
+    <td class="size">4 B</td><td class="peri">LED</td>
+    <td>16-bit LED output register.</td>
+  </tr>
+  <tr>
+    <td class="addr">0x4000_0000</td><td class="addr">0x4000_000B</td>
+    <td class="size">12 B</td><td class="peri">Timer</td>
+    <td>32-bit free-running counter + compare + control.</td>
+  </tr>
+  <tr>
+    <td class="addr">0x5000_0000</td><td class="addr">0x5000_000F</td>
+    <td class="size">16 B</td><td class="peri">TRNG</td>
+    <td>True Random Number Generator — ring-oscillator based.</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Address decoding uses bits [31:28] (the upper nibble). Any unaligned access or unmapped address returns 0x00000000 and does not stall the bus.
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════ UART -->
+<h2 id="uart">1. UART <span class="addr-badge">0x2000_0000</span></h2>
+<p>A simple 8-N-1 UART with a fixed baud rate of <strong>115200</strong> baud. The baud divisor is hard-coded to 868 clock cycles per bit (100 MHz ÷ 115200). TX and RX share the same DATA register address — direction is determined by read vs. write.</p>
+
+<!-- UART_DATA -->
+<h3 id="uart-data">1.1 — UART_DATA</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">UART_DATA</span>
+    <span class="reg-addr">0x2000_0000</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">30</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">29</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">28</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">27</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">26</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">25</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rsvd"><div class="bit-num">24</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">7</div><div class="bit-name">DATA[7]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">6</div><div class="bit-name">DATA[6]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">5</div><div class="bit-name">DATA[5]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">4</div><div class="bit-name">DATA[4]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">3</div><div class="bit-name">DATA[3]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">2</div><div class="bit-name">DATA[2]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">1</div><div class="bit-name">DATA[1]</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">0</div><div class="bit-name">DATA[0]</div><div class="bit-reset-row">0</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:8</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0x00</td><td class="bdesc">Reserved. Always reads 0. Writes ignored.</td></tr>
+    <tr><td class="bn">7:0</td><td class="bname">DATA[7:0]</td><td><span class="reg-access rw">R/W</span></td><td class="brst">0x00</td><td class="bdesc"><strong>Write:</strong> Loads byte into TX shift register and begins transmission (8-N-1 at 115200 baud). Only valid when TX_BUSY = 0.<br><strong>Read:</strong> Returns the last received byte. Clears RX_VALID (ack).</td></tr>
+  </table>
+</div>
+
+<!-- UART_STATUS -->
+<h3 id="uart-status">1.2 — UART_STATUS</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">UART_STATUS</span>
+    <span class="reg-addr">0x2000_0004</span>
+    <span class="reg-access ro">RO</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:2</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">1</div><div class="bit-name">RX_VALID</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">0</div><div class="bit-name">TX_BUSY</div><div class="bit-reset-row">0</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:2</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Reserved.</td></tr>
+    <tr><td class="bn">1</td><td class="bname">RX_VALID</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Set to 1 when a complete byte has been received and is waiting in the RX buffer. Cleared automatically when UART_DATA is read.</td></tr>
+    <tr><td class="bn">0</td><td class="bname">TX_BUSY</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Set to 1 while the TX shift register is actively transmitting. You <strong>must</strong> wait for TX_BUSY = 0 before writing the next byte to UART_DATA.</td></tr>
+  </table>
+</div>
+
+<h3 id="uart-ex">1.3 — C Usage Examples</h3>
+<div class="code-block">
+<span class="c">// ── Transmit one byte ──────────────────────────────────</span><br>
+<span class="k">while</span> (REG_UART_STATUS &amp; <span class="v">0x01</span>);    <span class="c">// wait TX_BUSY = 0</span><br>
+REG_UART_DATA = <span class="v">'A'</span>;<br>
+<br>
+<span class="c">// ── Receive one byte (blocking) ────────────────────────</span><br>
+<span class="k">while</span> (!(REG_UART_STATUS &amp; <span class="v">0x02</span>));  <span class="c">// wait RX_VALID = 1</span><br>
+<span class="t">char</span> c = (<span class="t">char</span>)(REG_UART_DATA &amp; <span class="v">0xFF</span>);<br>
+<br>
+<span class="c">// ── Non-blocking RX check ──────────────────────────────</span><br>
+<span class="k">if</span> (REG_UART_STATUS &amp; <span class="v">0x02</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t">char</span> c = (<span class="t">char</span>)(REG_UART_DATA &amp; <span class="v">0xFF</span>);<br>
+}<br>
+<br>
+<span class="c">// ── Driver API shorthand ───────────────────────────────</span><br>
+<span class="fn">uart_putc</span>(<span class="v">'H'</span>);         <span class="c">// blocks until TX_BUSY clears, then sends</span><br>
+<span class="fn">uart_puts</span>(<span class="s">"Hello!\n"</span>);   <span class="c">// sends each char, auto-inserts \r before \n</span><br>
+<span class="t">char</span> b = <span class="fn">uart_getc</span>();   <span class="c">// blocks until RX_VALID = 1</span><br>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════ LED -->
+<h2 id="led">2. LED <span class="addr-badge">0x3000_0000</span></h2>
+<p>Direct-mapped 16-bit output register. Each bit controls one physical LED on the Boolean board. Write 1 to turn ON, write 0 to turn OFF. Reads return the current register value.</p>
+
+<h3 id="led-reg">2.1 — LED_REG</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">LED_REG</span>
+    <span class="reg-addr">0x3000_0000</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:16</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">15</div><div class="bit-name">LED15</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">14</div><div class="bit-name">LED14</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">13</div><div class="bit-name">LED13</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">12</div><div class="bit-name">LED12</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">11</div><div class="bit-name">LED11</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">10</div><div class="bit-name">LED10</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">9</div><div class="bit-name">LED9</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">8</div><div class="bit-name">LED8</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">7</div><div class="bit-name">LED7</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">6</div><div class="bit-name">LED6</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">5</div><div class="bit-name">LED5</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">4</div><div class="bit-name">LED4</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">3</div><div class="bit-name">LED3</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">2</div><div class="bit-name">LED2</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">1</div><div class="bit-name">LED1</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">0</div><div class="bit-name">LED0</div><div class="bit-reset-row">0</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:16</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0x0000</td><td class="bdesc">Reserved. Writes ignored, reads return 0.</td></tr>
+    <tr><td class="bn">15:0</td><td class="bname">LED[15:0]</td><td><span class="reg-access rw">R/W</span></td><td class="brst">0x0000</td><td class="bdesc">Each bit directly drives one physical LED. <strong>1 = LED ON</strong>, <strong>0 = LED OFF</strong>. Writes are byte-lane granular (wstrb byte 0 = LED[7:0], byte 1 = LED[15:8]).</td></tr>
+  </table>
+</div>
+
+<h3 id="led-ex">2.2 — C Usage Examples</h3>
+<div class="code-block">
+<span class="c">// ── Turn all LEDs ON ───────────────────────────────────</span><br>
+REG_LEDS = <span class="v">0xFFFF</span>;<br>
+<br>
+<span class="c">// ── Turn all LEDs OFF ──────────────────────────────────</span><br>
+REG_LEDS = <span class="v">0x0000</span>;<br>
+<br>
+<span class="c">// ── Light only LED 7 (bit 7) ───────────────────────────</span><br>
+REG_LEDS = (<span class="v">1U</span> &lt;&lt; <span class="v">7</span>);<br>
+<br>
+<span class="c">// ── Toggle LED 3 without affecting others ──────────────</span><br>
+REG_LEDS ^= (<span class="v">1U</span> &lt;&lt; <span class="v">3</span>);<br>
+<br>
+<span class="c">// ── Driver API ─────────────────────────────────────────</span><br>
+<span class="fn">led_set</span>(<span class="v">0xAAAA</span>);      <span class="c">// alternating pattern</span><br>
+<span class="fn">led_toggle</span>(<span class="v">0x00FF</span>);   <span class="c">// toggle lower 8 LEDs</span><br>
+<span class="fn">led_set_bit</span>(<span class="v">5</span>);       <span class="c">// set LED5 only</span><br>
+<span class="fn">led_clear_bit</span>(<span class="v">5</span>);     <span class="c">// clear LED5 only</span><br>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════ TIMER -->
+<h2 id="timer">3. Hardware Timer <span class="addr-badge">0x4000_0000</span></h2>
+<p>A 32-bit memory-mapped hardware timer. At reset, the counter is enabled and free-runs at 100 MHz (10 ns per tick). When the counter reaches the compare value (TIMER_CMP), it resets to zero, sets the MATCH flag, and raises an IRQ.</p>
+
+<div class="note">
+  <strong>Timing reference:</strong> 1 ms = 100,000 ticks &nbsp;|&nbsp; 1 µs = 100 ticks &nbsp;|&nbsp; 1 s = 100,000,000 ticks (0x05F5_E100)
+</div>
+
+<!-- TIMER_CNT -->
+<h3 id="timer-cnt">3.1 — TIMER_CNT</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TIMER_CNT</span>
+    <span class="reg-addr">0x4000_0000</span>
+    <span class="reg-access ro">RO</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-ro"><div class="bit-num">31:0</div><div class="bit-name">CNT[31:0]</div><div class="bit-reset-row">0x0000_0000</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:0</td><td class="bname">CNT[31:0]</td><td><span class="reg-access ro">RO</span></td><td class="brst">0x0000_0000</td><td class="bdesc">Current 32-bit counter value. Increments every clock cycle (10 ns at 100 MHz). Automatically resets to 0 when a compare match occurs. Wraps at 0xFFFF_FFFF if CMP is 0 (compare disabled).</td></tr>
+  </table>
+</div>
+
+<!-- TIMER_CMP -->
+<h3 id="timer-cmp">3.2 — TIMER_CMP</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TIMER_CMP</span>
+    <span class="reg-addr">0x4000_0004</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rw"><div class="bit-num">31:0</div><div class="bit-name">CMP[31:0]</div><div class="bit-reset-row">0x05F5_E100</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:0</td><td class="bname">CMP[31:0]</td><td><span class="reg-access rw">R/W</span></td><td class="brst">0x05F5_E100</td><td class="bdesc">Compare value. When CNT &gt;= CMP (and CMP ≠ 0), the counter resets to 0, MATCH flag is set, and IRQ is asserted. Reset default = 100,000,000 (1 second). Set CMP = 0 to disable compare / let counter free-run forever.</td></tr>
+  </table>
+</div>
+
+<!-- TIMER_CTRL -->
+<h3 id="timer-ctrl">3.3 — TIMER_CTRL</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TIMER_CTRL</span>
+    <span class="reg-addr">0x4000_0008</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:3</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">2</div><div class="bit-name">MATCH</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-w1c"><div class="bit-num">1</div><div class="bit-name">CLR_IRQ</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">0</div><div class="bit-name">EN</div><div class="bit-reset-row">1</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:3</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Reserved.</td></tr>
+    <tr><td class="bn">2</td><td class="bname">MATCH</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Set to 1 when CNT has reached CMP. Sticky — stays set until CLR_IRQ is written. Read this bit to detect timer expiry in polling mode.</td></tr>
+    <tr><td class="bn">1</td><td class="bname">CLR_IRQ</td><td><span class="reg-access w1c">W1C</span></td><td class="brst">0</td><td class="bdesc">Write 1 to clear the MATCH flag and deassert the IRQ line. Self-clearing (always reads 0). Typically combined with EN in one write: <code>TIMER_CTRL = 0x03</code>.</td></tr>
+    <tr><td class="bn">0</td><td class="bname">EN</td><td><span class="reg-access rw">R/W</span></td><td class="brst">1</td><td class="bdesc">Timer enable. 1 = counter runs. 0 = counter frozen. Default is 1 (running) after reset.</td></tr>
+  </table>
+</div>
+
+<h3 id="timer-ex">3.4 — C Usage Examples</h3>
+<div class="code-block">
+<span class="c">// ── Read raw tick count ────────────────────────────────</span><br>
+<span class="t">uint32_t</span> now = REG_TIMER_CNT;   <span class="c">// ticks since last match</span><br>
+<br>
+<span class="c">// ── Spin-wait for 1 ms (100,000 ticks) ────────────────</span><br>
+<span class="t">uint32_t</span> t0 = REG_TIMER_CNT;<br>
+<span class="k">while</span> ((REG_TIMER_CNT - t0) &lt; <span class="v">100000</span>);<br>
+<br>
+<span class="c">// ── Set compare for 500 ms (50,000,000 ticks) ─────────</span><br>
+REG_TIMER_CMP  = <span class="v">50000000</span>;<br>
+REG_TIMER_CTRL = <span class="v">0x03</span>;   <span class="c">// EN=1, clear any prior match</span><br>
+<span class="k">while</span> (!(REG_TIMER_CTRL &amp; <span class="v">0x04</span>));  <span class="c">// poll MATCH flag (bit 2)</span><br>
+REG_TIMER_CTRL = <span class="v">0x03</span>;   <span class="c">// clear MATCH after handling</span><br>
+<br>
+<span class="c">// ── Stop the timer ─────────────────────────────────────</span><br>
+REG_TIMER_CTRL &amp;= ~<span class="v">0x01</span>;   <span class="c">// EN = 0</span><br>
+<br>
+<span class="c">// ── Driver API ─────────────────────────────────────────</span><br>
+<span class="fn">timer_init</span>();                  <span class="c">// sets CTRL = 0x01 (enable)</span><br>
+<span class="t">uint32_t</span> c = <span class="fn">timer_get_cycles</span>();  <span class="c">// reads CNT</span><br>
+<span class="fn">timer_delay_cycles</span>(<span class="v">100000</span>);  <span class="c">// spin-waits 1 ms</span><br>
+</div>
+
+<div class="warn">
+  <strong>Warning:</strong> When CMP is set, the counter resets to 0 on match. If you use TIMER_CNT for timestamps (elapsed time measurement), set CMP = 0 to let the counter free-run indefinitely.
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════ TRNG -->
+<h2 id="trng">4. TRNG <span class="addr-badge">0x5000_0000</span></h2>
+<p>A hardware True Random Number Generator based on a bank of 16 ring oscillators with lengths 3, 5, 7, ... 33 inverter stages. Output bits are XOR-combined, optionally de-biased using the von Neumann algorithm, and assembled into 32-bit words. Two NIST SP 800-90B health tests (Repetition Count + Adaptive Proportion) run continuously.</p>
+
+<div class="note">
+  <strong>Startup sequence:</strong> Write <code>TRNG_CTRL = 0x03</code> (EN + VN_EN), then wait for WARMUP_DONE (bit 4 of TRNG_STATUS) before reading data. The warm-up discards the first 1024 raw bits.
+</div>
+
+<!-- TRNG_DATA -->
+<h3 id="trng-data">4.1 — TRNG_DATA</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TRNG_DATA</span>
+    <span class="reg-addr">0x5000_0000</span>
+    <span class="reg-access ro">RO (destructive read)</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-ro"><div class="bit-num">31:0</div><div class="bit-name">RDATA[31:0]</div><div class="bit-reset-row">0x0000_0000</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:0</td><td class="bname">RDATA[31:0]</td><td><span class="reg-access ro">RO</span></td><td class="brst">0x0000_0000</td><td class="bdesc">A 32-bit true random word. <strong>Reading this register POPS (consumes) the word</strong> — DATA_VALID is cleared after the read. If DATA_VALID = 0 when read, returns 0x00000000 and sets the UNDERFLOW sticky flag.</td></tr>
+  </table>
+</div>
+
+<!-- TRNG_STATUS -->
+<h3 id="trng-status">4.2 — TRNG_STATUS</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TRNG_STATUS</span>
+    <span class="reg-addr">0x5000_0004</span>
+    <span class="reg-access ro">RO</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:6</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">5</div><div class="bit-name">UF</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">4</div><div class="bit-name">WU_DONE</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">3</div><div class="bit-name">APT_FAIL</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">2</div><div class="bit-name">RCT_FAIL</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">1</div><div class="bit-name">HLT_FAIL</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-ro"><div class="bit-num">0</div><div class="bit-name">DV</div><div class="bit-reset-row">0</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:6</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Reserved.</td></tr>
+    <tr><td class="bn">5</td><td class="bname">UNDERFLOW</td><td><span class="reg-access ro">RO sticky</span></td><td class="brst">0</td><td class="bdesc">Set when TRNG_DATA was read but DATA_VALID was 0 (empty or unhealthy). Sticky — cleared by writing CLR (bit 3 of TRNG_CTRL).</td></tr>
+    <tr><td class="bn">4</td><td class="bname">WARMUP_DONE</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Cleared at reset / CLR. Set after 1024 raw bits have been discarded. <strong>Wait for this = 1 before reading TRNG_DATA.</strong></td></tr>
+    <tr><td class="bn">3</td><td class="bname">APT_FAIL</td><td><span class="reg-access ro">RO sticky</span></td><td class="brst">0</td><td class="bdesc">Adaptive Proportion Test failure (NIST SP 800-90B §4.4.2). Sticky. Indicates a bias or stuck-bit condition in the raw bitstream.</td></tr>
+    <tr><td class="bn">2</td><td class="bname">RCT_FAIL</td><td><span class="reg-access ro">RO sticky</span></td><td class="brst">0</td><td class="bdesc">Repetition Count Test failure (NIST SP 800-90B §4.4.1). Sticky. Indicates the oscillators may be locked or the XOR output is frozen.</td></tr>
+    <tr><td class="bn">1</td><td class="bname">HEALTH_FAIL</td><td><span class="reg-access ro">RO sticky</span></td><td class="brst">0</td><td class="bdesc">Logical OR of RCT_FAIL and APT_FAIL. Check this bit as the overall health indicator.</td></tr>
+    <tr><td class="bn">0</td><td class="bname">DATA_VALID</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">1 = a fresh 32-bit random word is ready in TRNG_DATA. Cleared when TRNG_DATA is read. Always check this before reading to avoid underflow.</td></tr>
+  </table>
+</div>
+
+<!-- TRNG_CTRL -->
+<h3 id="trng-ctrl">4.3 — TRNG_CTRL</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TRNG_CTRL</span>
+    <span class="reg-addr">0x5000_0008</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:4</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-w1c"><div class="bit-num">3</div><div class="bit-name">CLR</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">2</div><div class="bit-name">IRQ_EN</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">1</div><div class="bit-name">VN_EN</div><div class="bit-reset-row">1</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">0</div><div class="bit-name">EN</div><div class="bit-reset-row">0</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:4</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Reserved.</td></tr>
+    <tr><td class="bn">3</td><td class="bname">CLR</td><td><span class="reg-access w1c">W1C</span></td><td class="brst">0</td><td class="bdesc">Write 1 to: clear all sticky status flags (HEALTH_FAIL, RCT_FAIL, APT_FAIL, UNDERFLOW), flush the output holding register, and restart the warm-up sequence. Self-clearing.</td></tr>
+    <tr><td class="bn">2</td><td class="bname">IRQ_EN</td><td><span class="reg-access rw">R/W</span></td><td class="brst">0</td><td class="bdesc">Interrupt enable. When set, the IRQ line is asserted whenever DATA_VALID = 1 or HEALTH_FAIL = 1. Currently unconnected to PicoRV32 IRQ in this SoC version.</td></tr>
+    <tr><td class="bn">1</td><td class="bname">VN_EN</td><td><span class="reg-access rw">R/W</span></td><td class="brst">1</td><td class="bdesc">Von Neumann de-biasing enable. 1 = pairs of raw bits are de-biased (10→1, 01→0, 00/11 discarded), improving bit balance at the cost of ~50% throughput reduction. Default ON.</td></tr>
+    <tr><td class="bn">0</td><td class="bname">EN</td><td><span class="reg-access rw">R/W</span></td><td class="brst">0</td><td class="bdesc">Ring oscillator enable. 0 = oscillators stopped (saves power). <strong>Must be set to 1 to generate random data.</strong> Default 0 at reset — you must enable it.</td></tr>
+  </table>
+</div>
+
+<!-- TRNG_DIV -->
+<h3 id="trng-div">4.4 — TRNG_DIV</h3>
+<div class="reg-block">
+  <div class="reg-header">
+    <span class="reg-name">TRNG_DIV</span>
+    <span class="reg-addr">0x5000_000C</span>
+    <span class="reg-access rw">R/W</span>
+  </div>
+  <div class="bitfield-wrap">
+    <div class="bitfield">
+      <div class="bit-cell bit-rsvd"><div class="bit-num">31:16</div><div class="bit-name">—</div><div class="bit-reset-row">0</div></div>
+      <div class="bit-cell bit-rw"><div class="bit-num">15:0</div><div class="bit-name">DIV[15:0]</div><div class="bit-reset-row">default</div></div>
+    </div>
+  </div>
+  <table class="bitdesc">
+    <tr><th class="bn">Bits</th><th class="bname">Name</th><th class="bacc">Access</th><th class="brst">Reset</th><th class="bdesc">Description</th></tr>
+    <tr><td class="bn">31:16</td><td class="bname">—</td><td><span class="reg-access ro">RO</span></td><td class="brst">0</td><td class="bdesc">Reserved.</td></tr>
+    <tr><td class="bn">15:0</td><td class="bname">DIV[15:0]</td><td><span class="reg-access rw">R/W</span></td><td class="brst">hw-default</td><td class="bdesc">Sample period = DIV + 1 clock cycles. Higher value = more jitter accumulated per raw bit = better entropy quality, but lower throughput. DIV = 0 = fastest rate (1 raw bit per clock).</td></tr>
+  </table>
+</div>
+
+<h3 id="trng-ex">4.5 — C Usage Examples</h3>
+<div class="code-block">
+<span class="c">// ── Standard startup (always do this first) ────────────</span><br>
+REG_TRNG_CTRL = <span class="v">0x03</span>;   <span class="c">// EN=1, VN_EN=1</span><br>
+REG_TRNG_DIV  = <span class="v">0</span>;      <span class="c">// fastest sample rate</span><br>
+<span class="k">while</span> (!(REG_TRNG_STATUS &amp; <span class="v">0x10</span>));  <span class="c">// wait WARMUP_DONE</span><br>
+<br>
+<span class="c">// ── Read one 32-bit random word (safe way) ─────────────</span><br>
+<span class="k">while</span> (!(REG_TRNG_STATUS &amp; <span class="v">0x01</span>));  <span class="c">// wait DATA_VALID</span><br>
+<span class="t">uint32_t</span> r = REG_TRNG_DATA;         <span class="c">// pops word, clears DV</span><br>
+<br>
+<span class="c">// ── Check health before use ────────────────────────────</span><br>
+<span class="k">if</span> (REG_TRNG_STATUS &amp; <span class="v">0x02</span>) {    <span class="c">// HEALTH_FAIL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;REG_TRNG_CTRL = <span class="v">0x0B</span>;           <span class="c">// CLR=1 + EN=1 + VN_EN=1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">while</span> (!(REG_TRNG_STATUS &amp; <span class="v">0x10</span>));  <span class="c">// re-warm</span><br>
+}<br>
+<br>
+<span class="c">// ── Disable to save power ──────────────────────────────</span><br>
+REG_TRNG_CTRL &amp;= ~<span class="v">0x01</span>;   <span class="c">// EN = 0</span><br>
+<br>
+<span class="c">// ── Driver API ─────────────────────────────────────────</span><br>
+<span class="fn">trng_init</span>();              <span class="c">// EN=1, VN_EN=1</span><br>
+<span class="k">while</span> (!<span class="fn">trng_is_warm</span>());   <span class="c">// poll bit 4</span><br>
+<span class="t">uint32_t</span> r = <span class="fn">trng_read</span>(); <span class="c">// blocks until DV=1, then pops</span><br>
+<span class="t">bool</span> ok = <span class="fn">trng_has_data</span>(); <span class="c">// non-blocking DV check</span><br>
+</div>
+
+<div class="warn">
+  <strong>Warning:</strong> Reading TRNG_DATA when DATA_VALID = 0 returns 0x00000000 — this is NOT a random value. Always poll DATA_VALID or use trng_read() which blocks until valid.
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════ DRIVER API -->
+<h2 id="drivers">5. C Driver Quick Reference</h2>
+<p>All driver functions are in <code>app/</code>. Include the relevant header and link the corresponding <code>.c</code> file via the Makefile.</p>
+
+<div class="code-block">
+<span class="c">// ── UART (uart.h / uart.c) ────────────────────────────</span><br>
+<span class="k">void</span> <span class="fn">uart_putc</span>(<span class="t">char</span> c);              <span class="c">// TX one byte (blocking)</span><br>
+<span class="k">void</span> <span class="fn">uart_puts</span>(<span class="k">const</span> <span class="t">char</span> *s);       <span class="c">// TX string (\n auto-adds \r)</span><br>
+<span class="t">bool</span> <span class="fn">uart_available</span>(<span class="k">void</span>);           <span class="c">// true if RX_VALID = 1</span><br>
+<span class="t">char</span> <span class="fn">uart_getc</span>(<span class="k">void</span>);               <span class="c">// RX one byte (blocking)</span><br>
+<span class="k">void</span> <span class="fn">uart_print_dec</span>(<span class="t">uint32_t</span> v);    <span class="c">// print decimal number</span><br>
+<span class="k">void</span> <span class="fn">uart_print_hex32</span>(<span class="t">uint32_t</span> v);  <span class="c">// print "0x12345678"</span><br>
+<br>
+<span class="c">// ── LED (led.h / led.c) ───────────────────────────────</span><br>
+<span class="k">void</span> <span class="fn">led_set</span>(<span class="t">uint16_t</span> value);        <span class="c">// set all 16 LEDs at once</span><br>
+<span class="k">void</span> <span class="fn">led_toggle</span>(<span class="t">uint16_t</span> mask);      <span class="c">// XOR mask onto current state</span><br>
+<span class="k">void</span> <span class="fn">led_set_bit</span>(<span class="t">uint8_t</span> bit);       <span class="c">// set single LED (0-15)</span><br>
+<span class="k">void</span> <span class="fn">led_clear_bit</span>(<span class="t">uint8_t</span> bit);     <span class="c">// clear single LED (0-15)</span><br>
+<br>
+<span class="c">// ── Timer (timer.h / timer.c) ─────────────────────────</span><br>
+<span class="k">void</span>     <span class="fn">timer_init</span>(<span class="k">void</span>);            <span class="c">// enable timer (CTRL = 0x01)</span><br>
+<span class="t">uint32_t</span> <span class="fn">timer_get_cycles</span>(<span class="k">void</span>);     <span class="c">// read TIMER_CNT</span><br>
+<span class="k">void</span>     <span class="fn">timer_delay_cycles</span>(<span class="t">uint32_t</span> n); <span class="c">// spin-wait n ticks</span><br>
+<br>
+<span class="c">// ── TRNG (trng.h / trng.c) ────────────────────────────</span><br>
+<span class="k">void</span>     <span class="fn">trng_init</span>(<span class="k">void</span>);            <span class="c">// EN=1, VN_EN=1</span><br>
+<span class="t">bool</span>     <span class="fn">trng_is_warm</span>(<span class="k">void</span>);         <span class="c">// WARMUP_DONE (bit 4)</span><br>
+<span class="t">bool</span>     <span class="fn">trng_has_data</span>(<span class="k">void</span>);        <span class="c">// DATA_VALID (bit 0)</span><br>
+<span class="t">uint32_t</span> <span class="fn">trng_read</span>(<span class="k">void</span>);            <span class="c">// blocking: waits DV, pops word</span><br>
+</div>
+
+</div><!-- /content -->
+</div><!-- /container -->
+
+<footer>
+  <span>PicoRV32 SoC Peripheral Datasheet &nbsp;|&nbsp; Make-A-Thon 2026</span>
+  <span>RV32I @ 100 MHz &nbsp;·&nbsp; Spartan-7 XC7S50 &nbsp;·&nbsp; Bare-Metal</span>
+</footer>
+
+</body>
+</html>

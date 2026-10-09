@@ -1,0 +1,261 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
+| Date         : Fri Oct  9 00:39:25 2026
+| Host         : RIYAJ-LOQ running 64-bit major release  (build 9200)
+| Command      : report_drc -file top_drc_opted.rpt -pb top_drc_opted.pb -rpx top_drc_opted.rpx
+| Design       : top
+| Device       : xc7s50csga324-1
+| Speed File   : -1
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 16
++---------+----------+----------------------------+--------+
+| Rule    | Severity | Description                | Checks |
++---------+----------+----------------------------+--------+
+| LUTLP-2 | Warning  | Combinatorial Loop Allowed | 16     |
++---------+----------+----------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+LUTLP-2#1 Warning
+Combinatorial Loop Allowed  
+11 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[4].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[4].g_inv[1].u_inv, u_trng/u_bank/g_ro[4].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[4].g_inv[3].u_inv, u_trng/u_bank/g_ro[4].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[4].g_inv[5].u_inv, u_trng/u_bank/g_ro[4].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[4].g_inv[7].u_inv, u_trng/u_bank/g_ro[4].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[4].g_inv[9].u_inv, u_trng/u_bank/g_ro[4].u_nand.
+Related violations: <none>
+
+LUTLP-2#2 Warning
+Combinatorial Loop Allowed  
+13 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[5].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[1].u_inv, u_trng/u_bank/g_ro[5].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[3].u_inv, u_trng/u_bank/g_ro[5].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[5].u_inv, u_trng/u_bank/g_ro[5].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[7].u_inv, u_trng/u_bank/g_ro[5].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[5].g_inv[9].u_inv, u_trng/u_bank/g_ro[5].u_nand.
+Related violations: <none>
+
+LUTLP-2#3 Warning
+Combinatorial Loop Allowed  
+15 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[6].g_inv[1].u_inv, u_trng/u_bank/g_ro[6].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[3].u_inv, u_trng/u_bank/g_ro[6].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[5].u_inv, u_trng/u_bank/g_ro[6].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[7].u_inv, u_trng/u_bank/g_ro[6].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[9].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[6].g_inv[13].u_inv
+u_trng/u_bank/g_ro[6].g_inv[14].u_inv.
+Related violations: <none>
+
+LUTLP-2#4 Warning
+Combinatorial Loop Allowed  
+17 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[7].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[1].u_inv, u_trng/u_bank/g_ro[7].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[3].u_inv, u_trng/u_bank/g_ro[7].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[5].u_inv, u_trng/u_bank/g_ro[7].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[7].u_inv, u_trng/u_bank/g_ro[7].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[7].g_inv[9].u_inv (the first 15 of 17 listed).
+Related violations: <none>
+
+LUTLP-2#5 Warning
+Combinatorial Loop Allowed  
+19 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[8].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[1].u_inv, u_trng/u_bank/g_ro[8].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[3].u_inv, u_trng/u_bank/g_ro[8].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[5].u_inv, u_trng/u_bank/g_ro[8].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[7].u_inv, u_trng/u_bank/g_ro[8].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[8].g_inv[9].u_inv (the first 15 of 19 listed).
+Related violations: <none>
+
+LUTLP-2#6 Warning
+Combinatorial Loop Allowed  
+21 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[9].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[1].u_inv, u_trng/u_bank/g_ro[9].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[3].u_inv, u_trng/u_bank/g_ro[9].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[5].u_inv, u_trng/u_bank/g_ro[9].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[7].u_inv, u_trng/u_bank/g_ro[9].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[9].g_inv[9].u_inv (the first 15 of 21 listed).
+Related violations: <none>
+
+LUTLP-2#7 Warning
+Combinatorial Loop Allowed  
+23 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[10].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[10].g_inv[9].u_inv (the first 15 of 23 listed).
+Related violations: <none>
+
+LUTLP-2#8 Warning
+Combinatorial Loop Allowed  
+25 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[11].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[11].g_inv[9].u_inv (the first 15 of 25 listed).
+Related violations: <none>
+
+LUTLP-2#9 Warning
+Combinatorial Loop Allowed  
+27 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[12].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[12].g_inv[9].u_inv (the first 15 of 27 listed).
+Related violations: <none>
+
+LUTLP-2#10 Warning
+Combinatorial Loop Allowed  
+29 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[13].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[13].g_inv[9].u_inv (the first 15 of 29 listed).
+Related violations: <none>
+
+LUTLP-2#11 Warning
+Combinatorial Loop Allowed  
+3 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[0].g_inv[1].u_inv, u_trng/u_bank/g_ro[0].g_inv[2].u_inv
+u_trng/u_bank/g_ro[0].u_nand.
+Related violations: <none>
+
+LUTLP-2#12 Warning
+Combinatorial Loop Allowed  
+31 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[14].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[14].g_inv[9].u_inv (the first 15 of 31 listed).
+Related violations: <none>
+
+LUTLP-2#13 Warning
+Combinatorial Loop Allowed  
+33 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[15].g_inv[10].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[11].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[12].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[13].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[14].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[15].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[1].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[3].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[5].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[7].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[8].u_inv,
+u_trng/u_bank/g_ro[15].g_inv[9].u_inv (the first 15 of 33 listed).
+Related violations: <none>
+
+LUTLP-2#14 Warning
+Combinatorial Loop Allowed  
+5 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[1].g_inv[1].u_inv, u_trng/u_bank/g_ro[1].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[1].g_inv[3].u_inv, u_trng/u_bank/g_ro[1].g_inv[4].u_inv
+u_trng/u_bank/g_ro[1].u_nand.
+Related violations: <none>
+
+LUTLP-2#15 Warning
+Combinatorial Loop Allowed  
+7 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[2].g_inv[1].u_inv, u_trng/u_bank/g_ro[2].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[2].g_inv[3].u_inv, u_trng/u_bank/g_ro[2].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[2].g_inv[5].u_inv, u_trng/u_bank/g_ro[2].g_inv[6].u_inv
+u_trng/u_bank/g_ro[2].u_nand.
+Related violations: <none>
+
+LUTLP-2#16 Warning
+Combinatorial Loop Allowed  
+9 LUT cells form a combinatorial loop. This can create a race condition. Timing analysis may not be accurate. The preferred resolution is to modify the design to remove combinatorial logic loops. This loop has been identified in the constraints as being known and understood by use of the ALLOW_COMBINATORIAL_LOOPS property on a net in the loop. The cells in the loop are: u_trng/u_bank/g_ro[3].g_inv[1].u_inv, u_trng/u_bank/g_ro[3].g_inv[2].u_inv,
+u_trng/u_bank/g_ro[3].g_inv[3].u_inv, u_trng/u_bank/g_ro[3].g_inv[4].u_inv,
+u_trng/u_bank/g_ro[3].g_inv[5].u_inv, u_trng/u_bank/g_ro[3].g_inv[6].u_inv,
+u_trng/u_bank/g_ro[3].g_inv[7].u_inv, u_trng/u_bank/g_ro[3].g_inv[8].u_inv
+u_trng/u_bank/g_ro[3].u_nand.
+Related violations: <none>
+
+
